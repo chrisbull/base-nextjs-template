@@ -30,6 +30,9 @@ jobs:
         run: |
           npm install @rollup/rollup-linux-x64-gnu --optional
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+
       - name: Run Vitest
         run: npm run test:run
 
