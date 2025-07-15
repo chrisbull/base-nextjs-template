@@ -13,6 +13,8 @@
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
+    "db:up": "docker compose up -d postgres || docker-compose up -d postgres",
+    "db:down": "docker compose down || docker-compose down",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
