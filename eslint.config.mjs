@@ -10,6 +10,17 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
+  // Ignore generated files
+  {
+    ignores: [
+      'src/generated/**/*',
+      '.next/**/*',
+      'node_modules/**/*',
+      'coverage/**/*',
+      'dist/**/*',
+      'build/**/*',
+    ],
+  },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...compat.extends('prettier'),
   {
