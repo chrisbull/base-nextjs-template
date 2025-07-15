@@ -1,7 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { ClientSafeProvider, LiteralUnion, signIn } from 'next-auth/react'
+import { useState, useEffect } from 'react'
+import {
+  ClientSafeProvider,
+  LiteralUnion,
+  signIn,
+  getProviders,
+} from 'next-auth/react'
 import {
   Button,
   VStack,
@@ -16,11 +21,7 @@ import { PasswordInput } from '@/components/ui/password-input'
 import { Field } from '@/components/ui/field'
 import { getProviderColor, getProviderIcon } from '@/components/auth/utils'
 
-interface RegisterFormProps {
-  providers: Record<LiteralUnion<string>, ClientSafeProvider> | null
-}
-
-export function RegisterForm({ providers }: RegisterFormProps) {
+export function RegisterForm() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,6 +29,18 @@ export function RegisterForm({ providers }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<string>,
+    ClientSafeProvider
+  > | null>(null)
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const providersData = await getProviders()
+      setProviders(providersData)
+    }
+    fetchProviders()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -2,10 +2,10 @@
 
 import { getProviderColor, getProviderIcon } from '@/components/auth/utils'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Field } from '@/components/ui/field'
 import { PasswordInput } from '@/components/ui/password-input'
 import {
   Button,
-  Field,
   HStack,
   Icon,
   Input,
@@ -18,20 +18,29 @@ import {
 } from '@chakra-ui/react'
 import {
   signIn,
+  getProviders,
   type ClientSafeProvider,
   type LiteralUnion,
 } from 'next-auth/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-interface SignInFormProps {
-  providers: Record<LiteralUnion<string>, ClientSafeProvider> | null
-}
-
-export function SignInForm({ providers }: SignInFormProps) {
+export function SignInForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<string>,
+    ClientSafeProvider
+  > | null>(null)
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const providersData = await getProviders()
+      setProviders(providersData)
+    }
+    fetchProviders()
+  }, [])
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
